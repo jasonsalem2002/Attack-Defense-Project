@@ -1,0 +1,46 @@
+import socket
+import time
+
+# Define UDP server settings
+UDP_IP = "0.0.0.0"  # Listen on all available network interfaces
+UDP_PORT = 12345    # Replace with your desired port number
+
+# Create a UDP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((UDP_IP, UDP_PORT))
+
+# Dictionary to store source IP addresses and message counts
+message_count = {}
+
+# Timeframe (in seconds) to track messages
+timeframe = 120  # 2 minutes
+
+# Maximum allowed messages per source
+max_messages_per_source = 50
+
+while True:
+    data, addr = sock.recvfrom(1024)  # Adjust buffer size as needed
+    
+    # Get the current timestamp
+    current_time = time.time()
+    
+    # Check if the source address is in the dictionary
+    if addr in message_count:
+        # Check if the time elapsed since the first message from this source
+        # exceeds the timeframe, and if so, reset the message count.
+        if current_time - message_count[addr]['start_time'] > timeframe:
+            message_count[addr] = {'count': 1, 'start_time': current_time}
+        else:
+            # Increment the message count for this source
+            message_count[addr]['count'] += 1
+    else:
+        # This is the first message from this source
+        message_count[addr] = {'count': 1, 'start_time': current_time}
+    
+    # Check if the message count exceeds the maximum allowed
+    if message_count[addr]['count'] <= max_messages_per_source:
+        # Process the received message here (e.g., print or store it)
+        print(f"Received message from {addr}: {data.decode('utf-8')}")
+
+# Close the socket when done (this won't be reached in this example)
+sock.close()
