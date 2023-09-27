@@ -1,4 +1,5 @@
 import socket
+# Jason
 
 # Server IP and port
 server_ip = '0.0.0.0'  # Listen on all available network interfaces
@@ -19,3 +20,5 @@ while True:
     # Decode and print the received data
     message = data.decode()
     print(f"Received from {client_address}: {message}")
+
+# Jason end
