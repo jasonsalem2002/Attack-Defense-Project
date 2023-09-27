@@ -1,17 +1,18 @@
-from scapy.all import IP, UDP, Raw, send
+import socket
 
-# Create a custom IP packet
-custom_ip_packet = IP(src="192.168.1.100", dst="192.168.1.200") 
-custom_udp_packet = UDP(sport=12345, dport=80)  
-custom_data = b"Custom payload data goes here"  
+# Server IP and port
+server_ip = '127.0.0.1'  # Replace with the actual server IP
+server_port = 12345  # Replace with the actual server port
 
-# Combine the IP, UDP, and payload layers
-packet = custom_ip_packet / custom_udp_packet / Raw(load=custom_data)
+# Create a UDP socket
+client_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
-# Send the packet
-send(packet, verbose=0)
+# Message to send
+message = "This is the message to send 100 times."
 
+for _ in range(100):
+    # Send the message to the server
+    client_socket.sendto(message.encode(), (server_ip, server_port))
 
-# use scapy to create a custom packet
-# use iptables to block incoming traffic
-
+# Close the socket
+client_socket.close()
