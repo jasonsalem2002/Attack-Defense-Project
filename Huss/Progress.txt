@@ -2,5 +2,7 @@ No need for external tool, modify the attackFromKali.py.
 Modification complete.
 Still need to modify the ServerTest python script to display the messages it received: done
 Need to create counter for the 2 proposed defenses :
-  - Defense
+  - Defense : 
+    1.Running the attack on the loop-back IP: Bypassed the strategy of maximum allowed messages per source through randomizing source IPs.
+    2.
   - defense-adv
