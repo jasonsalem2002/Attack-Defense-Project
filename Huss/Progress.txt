@@ -6,5 +6,6 @@ Need to create counter for the 2 proposed defenses :
     1.Running the attack on the loop-back IP: Bypassed the strategy of maximum allowed messages per source through randomizing source IPs.
     2.Running the attack on machines on the same network: Bypassed using the same strategy, however I should raise an excpetion so that the source ip doesn't coincide with the destination ip;
     in case of target ip and source ip coinciding: the defense is successful, and no more than maximum allowed messages per source.
+    3.Only drawback: code needs time to create all the random ip addresses.
 
   - defense-adv
