@@ -1,0 +1,109 @@
+import socket
+import time
+import threading
+from collections import defaultdict
+
+# Server IP and port
+server_ip = '0.0.0.0'  # Listen on all available network interfaces
+server_port = 12345  # Choose an available port
+
+# Define UDP server settings
+UDP_IP = "0.0.0.0"  # Listen on all available network interfaces
+UDP_PORT = 12345  # Port to be agreed on with the attack team
+
+# Create a UDP socket
+sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+sock.bind((UDP_IP, UDP_PORT))
+
+# Rate limiting parameters
+token_rate = 5  # Tokens replenished per second per IP
+token_bucket_capacity = 10  # Maximum number of tokens per IP
+
+# Lock for thread safety
+token_lock = threading.Lock()
+
+# Token buckets for rate limiting, one per source IP
+token_buckets = defaultdict(int)
+
+# Connection tracking parameters
+STATE_NEW = "NEW"
+STATE_ESTABLISHED = "ESTABLISHED"
+STATE_INVALID = "INVALID"
+CONNECTION_TIMEOUT = 60  # Timeout for connection expiration (in seconds)
+
+# Connection table (dictionary)
+connection_table = defaultdict(lambda: {"state": STATE_INVALID, "timestamp": 0})
+
+# Token replenishment thread
+def replenish_tokens():
+    while True:
+        time.sleep(1.0 / token_rate)
+        with token_lock:
+            for ip in list(token_buckets.keys()):
+                if token_buckets[ip] < token_bucket_capacity:
+                    token_buckets[ip] += 1
+
+# Start the token replenishment thread
+token_thread = threading.Thread(target=replenish_tokens)
+token_thread.daemon = True
+token_thread.start()
+
+def process_udp_packet(packet):
+    source_ip = packet["source_ip"]
+    source_port = packet["source_port"]
+    dest_ip = packet["dest_ip"]
+    dest_port = packet["dest_port"]
+
+    # Check if a matching connection exists in the table
+    key = (source_ip, source_port, dest_ip, dest_port)
+    if key in connection_table:
+        # Update the timestamp for an existing connection
+        connection_table[key]["timestamp"] = time.time()
+        connection_table[key]["state"] = STATE_ESTABLISHED
+    else:
+        # Create a new connection entry
+        connection_table[key]["timestamp"] = time.time()
+        connection_table[key]["state"] = STATE_NEW
+
+    # Remove expired connections
+    current_time = time.time()
+    expired_connections = [k for k, entry in connection_table.items() if current_time - entry["timestamp"] > CONNECTION_TIMEOUT]
+    for expired_key in expired_connections:
+        del connection_table[expired_key]
+
+    # Implement policy based on connection state
+    if connection_table[key]["state"] == STATE_ESTABLISHED:
+        # Allow the packet to pass through
+        print(f"Packet passed: ESTABLISHED from {source_ip}")
+        with token_lock:
+            if token_buckets[source_ip] > 0:
+                # Process the received message here (e.g., print or store it)
+                print(f"Received message from {source_ip}: {packet['message']}")
+                token_buckets[source_ip] -= 1
+            else:
+                # Rate limit exceeded, drop the message or take appropriate action
+                print(f"Rate limit exceeded for {source_ip}. Dropping message.")
+                # You can implement actions like logging, alerting, or dropping here.
+    elif connection_table[key]["state"] == STATE_NEW:
+        # Implement policy for new connections (e.g., rate limiting, dropping)
+        print(f"Packet blocked: NEW from {source_ip}")
+    else:
+        # Handle other cases, e.g., STATE_INVALID
+        print(f"Packet handled: INVALID from {source_ip}")
+
+while True:
+    data, addr = sock.recvfrom(1024)  # Adjust buffer size as needed
+
+    source_ip = addr[0]
+    message = data.decode('utf-8')
+
+    # Create a packet dictionary for processing
+    packet_data = {
+        "source_ip": source_ip,
+        "source_port": addr[1],  # Source port from the sender
+        "dest_ip": server_ip,
+        "dest_port": server_port,
+        "message": message
+    }
+
+    process_udp_packet(packet_data)
