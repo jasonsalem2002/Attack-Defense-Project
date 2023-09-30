@@ -34,7 +34,7 @@ while True:
         continue
 
     # Check if the client has exceeded the packet limit for the time period
-    if ip_packet_counts[client_ip] >= packet_limit:
+    elif ip_packet_counts[client_ip] >= packet_limit:
         print(f"IP {client_ip} has exceeded the packet limit. Locking out for {lockout_duration} seconds.")
         ip_lockout_times[client_ip] = time.time() + lockout_duration
         ip_packet_counts[client_ip] = 0  # Reset packet count
