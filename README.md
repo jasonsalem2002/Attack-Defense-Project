@@ -1,11 +1,46 @@
-# DDoS Attack and Prevention System
+# **DDoS Attack and Detection Tool: Project Report**
 
 <p align="center">
   <img src="https://img.shields.io/badge/language-python-blue.svg">
   <img src="https://img.shields.io/badge/library-Scapy-green.svg">
+  <img src="https://img.shields.io/badge/library-Socket-yellow.svg">
+  <img src="https://img.shields.io/badge/library-Random-orange.svg">
+  <img src="https://img.shields.io/badge/library-Time-lightgrey.svg">
+  <img src="https://img.shields.io/badge/library-Threading-blueviolet.svg">
+  <img src="https://img.shields.io/badge/library-Tqdm-brightgreen.svg">
+  <img src="https://img.shields.io/badge/library-Struct-lightblue.svg">
 </p>
 
 This repository contains Python scripts that demonstrate both DDoS (Distributed Denial of Service) attack techniques implemented using the Scapy library, and a DDoS detection and prevention system. Scapy is a powerful packet manipulation and network analysis tool. The scripts provide examples of different attack protocols (UDP or TCP) and attack types (Tear Drop, Syn Flood, Syn-Ack Flood, Ack Flood, and Fin Flood). Additionally, the system includes modules for detecting and mitigating these attacks. These scripts are **strictly for educational purposes** and should not be used for malicious activities. DDoS attacks are illegal and unethical.
+
+## **Project Overview**
+
+- **Attack Tool Development:** 
+  - **Team Member: Jason**
+    - Developed the base of the attack code.
+    - Implemented UDP attacks including Tear Drop.
+    - Created maximum payload size attack to create malformed packets.
+    - Implemented random source IP generation to bypass source blocking.
+    - Implemented threading to enhance the speed of the attack.
+    - Added logging feature to save the results of the attack.
+
+- **Attack Tool Enhancements:**
+  - **Team Member: Hussein**
+    - Added progress bar for visualizing attack progress.
+    - Implemented TCP attacks including SYN Flood, SYN-ACK Flood, Ack Flood, and Fin Flood.
+
+- **Attack Detection Tool Development:**
+  - **Team Member: Ahmad**
+    - Implemented initial UPD packet number limitation and source IP blocking.
+    - Implemented initial UDP packet rate limiting.
+    - Implemented TCP SYN/SYN-ACK/ACK/FIN attack detection and source IP blocking.
+
+- **DDoS Mitigation:**
+  - **Team Member: Paul**
+    - Developed logic for DOS and DDOS attack detection.
+    - Attempted DDOS attack mitigation by dropping new incoming packets.
+    - Implemented effective DDOS attack mitigation by locking IP addresses based on packet threshold.
+
 
 ## 🎯 Attack Procedures
 
@@ -50,16 +85,6 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 - Send a flood of TCP packets with the FIN flag set to the target server.
 
 ## 🛡️ DDoS Detection and Prevention
-
-### Server Configuration
-
-#### UDP Server:
-- **IP:** `0.0.0.0` (Listen on all available network interfaces)
-- **Port:** `12345`
-
-#### TCP Server:
-- **IP:** `0.0.0.0` (Listen on all available network interfaces)
-- **Port:** `54321`
 
 ### UDP DDoS Detection
 
@@ -107,15 +132,51 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 ## ⚙️ Usage and Running the System
 
 ### Prerequisites:
-- Ensure Python and the required libraries (`socket` and `scapy`) are installed.
 
-### Running the System:
-- Execute the provided code to start the UDP and TCP processing threads.
-- The system will begin monitoring and detecting DDoS attacks based on the predefined thresholds and logic.
+- **Python and Required Libraries:**
+  - Ensure Python 3.x is installed on your system. You can download Python from the official [Python website](https://www.python.org/downloads/).
+  - Install the necessary Python libraries using the following commands:
+    ```
+    pip install socket
+    pip install scapy
+    pip install tqdm
+    pip install struct
+    pip install random
+    pip install time
+    pip install threading
+    ```
+  
+- **Operating Systems:**
+  - The attack tool was developed and tested on Kali Linux.
+  - The server code was tested on a Windows operating system.
 
-### Monitoring:
-- Detected attacks, blocked IPs, and other relevant information are logged in the console output.
-- Adjust thresholds, lockout durations, and other parameters as needed based on network conditions and attack patterns.
+- **Wireshark (Optional for Packet Analysis):**
+  - Wireshark can be used for analyzing the sent packets and ensuring proper functioning of the tools. You can download Wireshark from the official [Wireshark website](https://www.wireshark.org/download.html).
+
+### Running the Attack Tool:
+
+1. Clone the attack tool repository from GitHub.
+2. Navigate to the attack tool directory in your terminal or command prompt.
+3. Ensure Python and the required libraries are installed (as mentioned in the prerequisites).
+4. Execute the attack tool script using Python by running the following command:
+    ```
+    python attack_tool.py
+    ```
+5. Follow the prompts to input the target server IP, port, and attack type.
+
+### Running the Detection Tool:
+
+1. Clone the detection tool repository from GitHub.
+2. Navigate to the detection tool directory in your terminal or command prompt.
+3. Ensure Python and the required libraries are installed (as mentioned in the prerequisites).
+4. Execute the detection tool script using Python by running the following command:
+    ```
+    python server.py
+    ```
+5. The tool will automatically start monitoring incoming traffic and detect DDoS attacks.
+
+**Note:** It's recommended to run the tools in a controlled environment for testing and educational purposes only.
+
 
 ---
 
