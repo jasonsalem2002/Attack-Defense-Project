@@ -84,7 +84,7 @@ def main():
     server_port = 12345
 
     # List of source IP addresses to use (replace with actual IPs)
-    source_ips = ['192.168.1.100', '192.168.1.101', '192.168.1.102']
+    source_ips = []
 
     # Generate additional random source IP addresses
     for _ in range(number_of_source_ips):
