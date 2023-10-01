@@ -1,51 +1,72 @@
-# Attack.py
+# DDoS Attack Scripts using Scapy
 
-`attack.py` is a Python script that demonstrates a simple network attack implementation using Scapy and multithreading. This script allows you to perform either a Tear Drop or Maximum Packet Size attack on a specified server with randomized source IP addresses.
+<p align="center">
+  <img src="https://img.shields.io/badge/language-python-blue.svg">
+  <img src="https://img.shields.io/badge/library-Scapy-green.svg">
+</p>
 
-## Prerequisites
+This repository contains Python scripts that demonstrate various DDoS (Distributed Denial of Service) attack techniques implemented using the Scapy library. Scapy is a powerful packet manipulation and network analysis tool. The scripts provide examples of different attack protocols (UDP or TCP) and attack types (Tear Drop, Syn Flood, Syn-Ack Flood, Ack Flood, and Fin Flood). These scripts are **strictly for educational purposes** and should not be used for malicious activities. DDoS attacks are illegal and unethical.
 
-- Python 3.x
-- [Scapy](https://scapy.net/) installed (`pip install scapy`)
-- tqdm library installed (`pip install tqdm`)
+## 🎯 Attack Procedures
 
-## Usage
+### 1. Tear Drop Attack
+The Tear Drop attack involves sending IP packets with overlapping fragments. This confuses the targeted system, causing it to crash or become unresponsive.
 
-1. Clone the repository to your local machine:
-   ```bash
-   git clone https://github.com/jasonsalem2002/Attack-Defense-Project.git
-   cd Attack-Defense-Project
+#### **Procedure:**
+- Generate random source IP addresses.
+- Create two overlapping fragments with randomized payload.
+- Send the fragments to the target server.
 
-2. Run the script
-   ```bash
-   sudo python3 attack.py
+### 2. UDP Flood Attack
+The UDP Flood attack floods the target server with UDP packets. This overwhelms the server's resources and makes it unreachable for legitimate users.
 
-### How It Works
+#### **Procedure:**
+- Generate random source IP addresses.
+- Create UDP packets with randomized source IP and maximum payload size.
+- Send the UDP packets to the target server.
 
-The script employs multithreading to send a specified number of malicious packets to a target server. Users can choose between two attack types:
+### 3. Syn Flood Attack
+The Syn Flood attack exploits the TCP protocol's handshake process by sending a flood of SYN packets, overwhelming the server and preventing it from accepting legitimate connections.
 
-1. **Tear Drop Attack:**
-   - Fragments IP packets to create overlapping fragments, causing the server's operating system to crash.
-   - Uses randomized source IP addresses to obfuscate the attacker's identity.
-  
-2. **Maximum Packet Size Attack:**
-   - Creates UDP packets with maximum payload size (1472 bytes) and randomizes source IP addresses.
-   - Floods the server with large packets, potentially overwhelming its network interface.
+#### **Procedure:**
+- Send a flood of SYN packets to the target server without completing the TCP handshake.
 
+### 4. Syn-Ack Flood Attack
+The Syn-Ack Flood attack involves sending a flood of TCP packets with the SYN-ACK flags set, overwhelming the target server and disrupting its operations.
 
-### Code Overview
+#### **Procedure:**
+- Send a flood of TCP packets with SYN-ACK flags set to the target server.
 
-- **Global Variables:**
-  - `sent_packets`: Tracks the number of sent packets.
-  - `start_time`: Records the attack start time.
-  
-- **Functions:**
-  - `log_results(attack_type, packets_sent, duration)`: Logs attack results to a file.
-  - `generate_random_ip()`: Generates a random IP address.
-  - `send_tear_drop_packet(server_ip, server_port, source_ips, count, progress_bar)`: Conducts Tear Drop attack.
-  - `send_udp_packet(server_ip, server_port, source_ips, count, progress_bar)`: Conducts Maximum Packet Size attack.
-  - `main()`: Main function to handle user input and initiate the attack.
+### 5. Ack Flood Attack
+The Ack Flood attack floods the target server with TCP packets containing only the ACK flag. This attack consumes server resources and affects its performance.
 
-### Note
+#### **Procedure:**
+- Send a flood of TCP packets with only the ACK flag set to the target server.
 
-- Ensure you have permission to test the script against the specified server.
-- Use responsibly and ethically; unauthorized DDoS attacks are illegal.
+### 6. Fin Flood Attack
+The Fin Flood attack sends a large number of TCP packets with the FIN flag set, disrupting the connection and causing the server to spend resources on handling incomplete connections.
+
+#### **Procedure:**
+- Send a flood of TCP packets with the FIN flag set to the target server.
+
+## ⚙️ Usage
+
+1. **Clone the repository** to your local machine.
+2. **Install dependencies** using `pip install -r requirements.txt`.
+3. **Run the desired attack script** by executing `python attack_script.py`.
+4. **Enter the following parameters:**
+   - Target server IP
+   - Target server port
+   - Attack protocol (UDP or TCP)
+   - Attack type (Tear Drop, UDP Flood, Syn Flood, Syn-Ack Flood, Ack Flood, or Fin Flood)
+   - Number of attack iterations
+   - Number of source IP addresses to generate
+5. **Monitor the attack progress** through the provided progress bar.
+
+**Note:** Always ensure you have the necessary permissions and only use these scripts for ethical and educational purposes. Unauthorized use of these scripts is illegal and unethical.
+
+---
+
+<p align="center">
+  <b>Happy Ethical Hacking! 🛡️</b>
+</p>
