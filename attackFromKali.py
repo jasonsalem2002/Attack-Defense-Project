@@ -31,7 +31,7 @@ def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
 
         # Update the progress bar
         progress_bar.update(1)
-        progress_bar.set_postfix(PacketsSent=sent_packets)
+        progress_bar.set_postfix(PacketsSent=sent_packets, ServerStatus="Online" if is_server_alive(server_ip) else "Offline")
 
         time.sleep(1)  # Update every second
 
