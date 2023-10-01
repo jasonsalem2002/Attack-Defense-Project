@@ -164,6 +164,13 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
     ```
 5. Follow the prompts to input the target server IP, port, and attack type.
 
+#### Logging Implementation:
+
+- **Logging Attack Details:**
+  - The attack tool is equipped with a logging feature that captures essential attack details, including the target IP, attack type, and timestamp.
+  - Attack results and progress are logged in real-time, providing valuable insights into the attack process.
+
+
 ### Running the Detection Tool:
 
 1. Clone the detection tool repository from GitHub.
