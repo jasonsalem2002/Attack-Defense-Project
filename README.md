@@ -160,7 +160,7 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 3. Ensure Python and the required libraries are installed (as mentioned in the prerequisites).
 4. Execute the attack tool script using Python by running the following command:
     ```
-    python attack_tool.py
+    sudo python3 attack_tool.py
     ```
 5. Follow the prompts to input the target server IP, port, and attack type.
 
@@ -171,7 +171,7 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 3. Ensure Python and the required libraries are installed (as mentioned in the prerequisites).
 4. Execute the detection tool script using Python by running the following command:
     ```
-    python server.py
+    python3 server.py
     ```
 5. The tool will automatically start monitoring incoming traffic and detect DDoS attacks.
 
