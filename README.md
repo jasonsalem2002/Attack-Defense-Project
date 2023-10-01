@@ -52,6 +52,12 @@ The Tear Drop attack involves sending IP packets with overlapping fragments. Thi
 - Create two overlapping fragments with randomized payload.
 - Send the fragments to the target server.
 
+#### **Screenshots and Packet Captures:**
+- **Attack Output:**
+  ![Tear Drop Attack Output](Screenshots/TearDrop/teardrop1.png)
+- **Wireshark Packet Capture:**
+  ![Tear Drop Attack Wireshark Capture](Screenshots/TearDrop/teardrop2.png)
+
 ### 2. UDP Flood Attack
 The UDP Flood attack floods the target server with UDP packets. This overwhelms the server's resources and makes it unreachable for legitimate users.
 
@@ -59,6 +65,13 @@ The UDP Flood attack floods the target server with UDP packets. This overwhelms 
 - Generate random source IP addresses.
 - Create UDP packets with randomized source IP and maximum payload size.
 - Send the UDP packets to the target server.
+
+#### **Screenshots and Packet Captures:**
+- **Attack Output:**
+  ![UDP Flood Attack Output](Screenshots/MalformedPacket/malformed1.png)
+- **Wireshark Packet Capture:**
+  ![UDP Flood Attack Wireshark Capture](Screenshots/MalformedPacket/malformed2.png)
+
 
 ### 3. Syn Flood Attack
 The Syn Flood attack exploits the TCP protocol's handshake process by sending a flood of SYN packets, overwhelming the server and preventing it from accepting legitimate connections.
