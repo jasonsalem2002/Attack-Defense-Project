@@ -24,6 +24,9 @@ udp_packet_counts = {}
 
 # Function to detect and respond to UDP attacks
 def detect_udp_attack():
+    """
+    Monitors UDP traffic and detects possible UDP DDoS attacks based on packet rate.
+    """
     while True:
         current_time = time.time()
         total_packets = sum(udp_packet_counts.values())
@@ -73,6 +76,10 @@ def detect_udp_teardrop(fragments):
 
 # Function to process incoming UDP packets
 def process_udp_packets():
+    """
+    Processes incoming UDP packets, detects possible UDP Tear Drop attacks,
+    and monitors packet rate to prevent UDP DDoS attacks.
+    """
     while True:
         # Receive data from the UDP client
         data, client_address = udp_server_socket.recvfrom(2048)
@@ -125,6 +132,10 @@ print(f"Listening for TCP packets on {tcp_server_ip}:{tcp_server_port}")
 
 # Function to process incoming TCP packets
 def process_tcp_packets():
+    """
+    Processes incoming TCP packets, detects potential TCP flood attacks,
+    and blocks malicious IPs if necessary.
+    """
     # Constants for TCP
     tcp_threshold_per_5_minutes = 50  # Maximum number of packets allowed per 5 minutes
     tcp_block_duration = 30 * 60  # 30 minutes
