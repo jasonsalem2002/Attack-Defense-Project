@@ -138,12 +138,7 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 1. **Fragment Analysis:**
    - UDP packets with fragments are analyzed for overlapping offsets, indicating a potential Tear Drop attack.
    - Detected Tear Drop attacks are flagged for further action.
-   - 
-#### **Screenshots and Packet Captures:**
-- **Detection Server Output:**
-  ![Tear Drop Attack Detection Output](path/to/tear_drop_detection_output.png)
-- **Wireshark Packet Capture (Detected Attack):**
-  ![Tear Drop Attack Detected Wireshark Capture](path/to/tear_drop_detected_wireshark.png)
+   
 
 ### TCP DDoS Detection
 
