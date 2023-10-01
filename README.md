@@ -79,11 +79,25 @@ The Syn Flood attack exploits the TCP protocol's handshake process by sending a 
 #### **Procedure:**
 - Send a flood of SYN packets to the target server without completing the TCP handshake.
 
+#### **Screenshots and Packet Captures:**
+- **Attack Output:**
+  ![Syn Flood Attack Output](Screenshots/SynFlood/synflood1.png)
+- **Wireshark Packet Capture:**
+  ![Syn Flood Attack Wireshark Capture](Screenshots/SynFlood/synflood2.png)
+
+
 ### 4. Syn-Ack Flood Attack
 The Syn-Ack Flood attack involves sending a flood of TCP packets with the SYN-ACK flags set, overwhelming the target server and disrupting its operations.
 
 #### **Procedure:**
 - Send a flood of TCP packets with SYN-ACK flags set to the target server.
+
+#### **Screenshots and Packet Captures:**
+- **Attack Output:**
+  ![Syn-ack Flood Attack Output](Screenshots/Syn-AckFlood/synack1.png)
+- **Wireshark Packet Capture:**
+  ![Syn-ack Flood Attack Wireshark Capture](Screenshots/Syn-AckFlood/synack2.png)
+
 
 ### 5. Ack Flood Attack
 The Ack Flood attack floods the target server with TCP packets containing only the ACK flag. This attack consumes server resources and affects its performance.
@@ -91,11 +105,25 @@ The Ack Flood attack floods the target server with TCP packets containing only t
 #### **Procedure:**
 - Send a flood of TCP packets with only the ACK flag set to the target server.
 
+#### **Screenshots and Packet Captures:**
+- **Attack Output:**
+  ![Ack Flood Attack Output](Screenshots/AckFlood/ackflood1.png)
+- **Wireshark Packet Capture:**
+  ![Ack Flood Attack Wireshark Capture](Screenshots/AckFlood/ackflood2.png)
+
+
 ### 6. Fin Flood Attack
 The Fin Flood attack sends a large number of TCP packets with the FIN flag set, disrupting the connection and causing the server to spend resources on handling incomplete connections.
 
 #### **Procedure:**
 - Send a flood of TCP packets with the FIN flag set to the target server.
+
+#### **Screenshots and Packet Captures:**
+- **Attack Output:**
+  ![Fin Flood Attack Output](Screenshots/FinFlood/finflood1.png)
+- **Wireshark Packet Capture:**
+  ![Fin Flood Attack Wireshark Capture](Screenshots/FinFlood/finflood2.png)
+
 
 ## 🛡️ DDoS Detection and Prevention
 
@@ -115,6 +143,12 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 1. **Fragment Analysis:**
    - UDP packets with fragments are analyzed for overlapping offsets, indicating a potential Tear Drop attack.
    - Detected Tear Drop attacks are flagged for further action.
+   - 
+#### **Screenshots and Packet Captures:**
+- **Detection Server Output:**
+  ![Tear Drop Attack Detection Output](path/to/tear_drop_detection_output.png)
+- **Wireshark Packet Capture (Detected Attack):**
+  ![Tear Drop Attack Detected Wireshark Capture](path/to/tear_drop_detected_wireshark.png)
 
 ### TCP DDoS Detection
 
