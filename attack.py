@@ -1,4 +1,5 @@
 from scapy.all import *
+from scapy.layers.inet import TCP, IP, UDP
 import random
 import threading
 import time
