@@ -223,7 +223,3 @@ The Fin Flood attack sends a large number of TCP packets with the FIN flag set, 
 
 
 ---
-
-<p align="center">
-  <b>Stay Secure! 🛡️ Happy Ethical Hacking! 🛡️</b>
-</p>
