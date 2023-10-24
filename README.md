@@ -16,7 +16,6 @@ This repository contains Python scripts that demonstrate both DDoS (Distributed 
 ## **Project Overview**
 
 - **Attack Tool Development:** 
-  - **Team Member: Jason**
     - Developed the base of the attack code.
     - Implemented UDP attacks including Tear Drop.
     - Created maximum payload size attack to create malformed packets.
@@ -25,18 +24,15 @@ This repository contains Python scripts that demonstrate both DDoS (Distributed 
     - Added logging feature to save the results of the attack.
 
 - **Attack Tool Enhancements:**
-  - **Team Member: Hussein**
     - Added progress bar for visualizing attack progress.
     - Implemented TCP attacks including SYN Flood, SYN-ACK Flood, Ack Flood, and Fin Flood.
 
 - **Attack Detection Tool Development:**
-  - **Team Member: Ahmad**
     - Implemented initial UPD packet number limitation and source IP blocking.
     - Implemented initial UDP packet rate limiting.
     - Implemented TCP SYN/SYN-ACK/ACK/FIN attack detection and source IP blocking.
 
 - **DDoS Mitigation:**
-  - **Team Member: Paul**
     - Developed logic for DOS and DDOS attack detection.
     - Attempted DDOS attack mitigation by dropping new incoming packets.
     - Implemented effective DDOS attack mitigation by locking IP addresses based on packet threshold.
